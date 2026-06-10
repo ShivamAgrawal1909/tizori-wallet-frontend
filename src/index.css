@@ -1,0 +1,83 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: oklch(0.97 0.01 256);
+  --color-foreground: oklch(0.21 0.04 265);
+
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.21 0.04 265);
+
+  --color-primary: oklch(0.51 0.21 264);
+  --color-primary-foreground: oklch(0.99 0 0);
+
+  --color-accent: oklch(0.55 0.22 295);
+  --color-accent-foreground: oklch(0.99 0 0);
+
+  --color-muted: oklch(0.95 0.01 256);
+  --color-muted-foreground: oklch(0.5 0.03 264);
+
+  --color-border: oklch(0.9 0.02 264);
+  --color-input: oklch(0.9 0.02 264);
+  --color-ring: oklch(0.51 0.21 264);
+
+  --color-destructive: oklch(0.58 0.22 27);
+  --color-destructive-foreground: oklch(0.99 0 0);
+
+  --color-success: oklch(0.6 0.16 150);
+
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+}
+
+@keyframes nova-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: nova-in 0.2s ease-out;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    font-family: var(--font-sans);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    margin: 0;
+    min-height: 100vh;
+  }
+}
+@keyframes book-open {
+  0% {
+    opacity: 0;
+    transform: perspective(1400px) rotateY(-12deg) scale(0.95);
+  }
+
+  50% {
+    opacity: 1;
+    transform: perspective(1400px) rotateY(3deg) scale(1.02);
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(1400px) rotateY(0deg) scale(1);
+  }
+}
+
+.animate-book-open {
+  animation: book-open 800ms ease-out both;
+}
