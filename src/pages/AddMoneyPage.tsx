@@ -33,7 +33,7 @@ export default function AddMoneyPage() {
 
       // Step 1: Create Razorpay Order
       const orderRes = await fetch(
-        `http://localhost:8080/api/payment/create-order`,
+        `${import.meta.env.VITE_API_URL}/api/payment/create-order`,
         {
           method: "POST",
           headers: {
@@ -61,7 +61,7 @@ export default function AddMoneyPage() {
         handler: async (response: any) => {
           // Step 3: Verify payment
           const verifyRes = await fetch(
-            `http://localhost:8080/api/payment/verify`,
+            `${import.meta.env.VITE_API_URL}/api/payment/verify`,
             {
               method: "POST",
               headers: {
