@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useAuth } from "../context/AuthContext"
 import { AppLayout } from "../components/AppLayout"
 
@@ -14,6 +14,17 @@ export default function AddMoneyPage() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
+
+  // Razorpay script sirf is page pe load hoga
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.async = true
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   const quickAmounts = [100, 500, 1000, 2000, 5000]
 
@@ -31,7 +42,6 @@ export default function AddMoneyPage() {
       const token = localStorage.getItem("tizori_token")
       const userId = localStorage.getItem("userId")
 
-      // Step 1: Create Razorpay Order
       const orderRes = await fetch(
         `${import.meta.env.VITE_API_URL}/api/payment/create-order`,
         {
@@ -50,7 +60,6 @@ export default function AddMoneyPage() {
         throw new Error(orderData.error || "Order create failed!")
       }
 
-      // Step 2: Razorpay Checkout open karo
       const options = {
         key: orderData.keyId,
         amount: orderData.amount * 100,
@@ -59,7 +68,6 @@ export default function AddMoneyPage() {
         description: "Add Money to Wallet",
         order_id: orderData.orderId,
         handler: async (response: any) => {
-          // Step 3: Verify payment
           const verifyRes = await fetch(
             `${import.meta.env.VITE_API_URL}/api/payment/verify`,
             {
@@ -122,7 +130,6 @@ export default function AddMoneyPage() {
           </div>
         )}
 
-        {/* Quick Amount Buttons */}
         <div className="mb-4">
           <p className="text-sm text-gray-500 mb-2">Quick Select</p>
           <div className="flex gap-2 flex-wrap">
@@ -142,7 +149,6 @@ export default function AddMoneyPage() {
           </div>
         </div>
 
-        {/* Amount Input */}
         <div className="mb-6">
           <label className="text-sm text-gray-500 mb-1 block">
             Enter Amount (₹)
@@ -156,7 +162,6 @@ export default function AddMoneyPage() {
           />
         </div>
 
-        {/* Pay Button */}
         <button
           onClick={handleAddMoney}
           disabled={loading || !amount}
